@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imooc.demo.dao.WebsiteDao">
+    <select id="queryWebsite" resultType="com.imooc.demo.entity.Website">
+        SELECT id, name, url, alexa, country
+        FROM websites
+        ORDER BY alexa
+    </select>
+    <select id="queryWebsiteByUrl" resultType="com.imooc.demo.entity.Website">
+        SELECT id, name, url, alexa, country
+        FROM websites
+        WHERE url=#{url}
+    </select>
+    <insert id="insertWebsite" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.imooc.demo.entity.Website">
+        INSERT INTO
+        websites(name, url, alexa, country)
+        VALUES
+        (#{name}, #{url}, #{alexa}, #{country})
+    </insert>
+    <update id="updateWebsite" parameterType="com.imooc.demo.entity.Website">
+        UPDATE websites
+        <set>
+            <if test="name!=null">name=#{name},</if>
+            <if test="url!=null">url=#{url},</if>
+            <if test="alexa!=null">alexa=#{alexa},</if>
+            <if test="country!=null">country=#{country}</if>
+        </set>
+        WHERE url=#{url}
+    </update>
+    <delete id="deleteWebsite">
+        DELETE FROM websites
+        WHERE url=#{url}
+    </delete>
+
+</mapper>
