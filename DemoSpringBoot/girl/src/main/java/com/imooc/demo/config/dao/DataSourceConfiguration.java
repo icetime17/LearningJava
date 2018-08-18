@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.beans.PropertyVetoException;
 
+// 配置该类可以使用Spring IoC容器来作为bean定义的来源.
 @Configuration
 // 配置mybatis mapper的扫描路径
 @MapperScan("com.imooc.demo.dao")

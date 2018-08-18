@@ -12,6 +12,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import javax.sql.DataSource;
 import java.io.IOException;
 
+// 配置该类可以使用Spring IoC容器来作为bean定义的来源.
 @Configuration
 public class SessionFactoryConfiguration {
 

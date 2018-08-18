@@ -1,8 +1,14 @@
 package com.imooc.demo;
 
+import com.imooc.demo.dao.WebsiteDao;
+import com.imooc.demo.entity.Website;
+import com.imooc.demo.service.WebsiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+
+import javax.xml.bind.annotation.W3CDomHandler;
+import java.util.List;
 
 @RestController
 public class HelloController {
@@ -32,6 +38,13 @@ public class HelloController {
     @Autowired
     private GirlProperties girlProperties;
 
+    @Autowired
+    private WebsiteDao websiteDao;
+
+    @Autowired
+    private WebsiteService websiteService;
+
+
     // 对应http://0.0.0.0:8081/hello/chris这种请求方式
     // 而http://0.0.0.0:8081/hello?name=chris这种请求方式, 可以采用注解@RequestParam
     // public String sayHello(@RequestParam(value = "name", required = false, defaultValue = "somebody") String name) {
@@ -50,12 +63,22 @@ public class HelloController {
         return "World Spring Boot. " + "cupSize : " + girlProperties.getCupSize() + " , " + "age : " + girlProperties.getAge();
     }
 
-    @RequestMapping(value = {"/mybatis/{name}", "/batis/{name}"}, method = RequestMethod.GET)
-    public String mybatis(@PathVariable("name") String name) {
-
-
-
-
-        return "Hello mybatis " + name;
+    @RequestMapping(value = {"/mybatis/{action}"}, method = RequestMethod.GET)
+    public String mybatis(@PathVariable("action") String action) {
+        if (action.equals("size")) {
+//            List<Website> websites = websiteDao.queryWebsite();
+            List<Website> websites = websiteService.queryWebsite();
+            for (Website website : websites) {
+                System.out.println(website.getId() + " " + website.getName() + " " + website.getUrl() + " " + website.getAlexa() + " " + website.getCountry());
+            }
+            return "Hello mybatis " + websites.size();
+        } else if (action.equals("query")) {
+//            Website website = websiteDao.queryWebsiteByUrl("https://www.dianping.com/");
+            Website website = websiteService.queryWebsiteByUrl("https://www.dianping.com/");
+            System.out.println(website.getId() + " " + website.getName() + " " + website.getUrl() + " " + website.getAlexa() + " " + website.getCountry());
+            return "Hello mybatis " + website.getName() + " " + website.getUrl();
+        } else {
+            return "Hello mybatis.";
+        }
     }
 }
